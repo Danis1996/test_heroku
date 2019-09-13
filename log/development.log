@@ -18452,3 +18452,552 @@ Processing by ActiveStorage::DiskController#show as JPEG
 Completed 200 OK in 1ms (ActiveRecord: 0.0ms | Allocations: 376)
 
 
+  [1m[35m (45.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (57.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", "environment"]]
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", "environment"]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", "environment"]]
+  [1m[35m (650.7ms)[0m  [1m[35mDROP DATABASE IF EXISTS "scaff_development"[0m
+  [1m[35m (465.1ms)[0m  [1m[35mDROP DATABASE IF EXISTS "scaff_test"[0m
+  [1m[35m (3021.0ms)[0m  [1m[35mCREATE DATABASE "scaff_development" ENCODING = 'unicode'[0m
+  [1m[35m (1801.3ms)[0m  [1m[35mCREATE DATABASE "scaff_test" ENCODING = 'unicode'[0m
+  [1m[35m (179.7ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (174.3ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT pg_try_advisory_lock(1454809796900757255)[0m
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to DeviseCreateUsers (20190912152807)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (174.5ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "email" character varying DEFAULT '' NOT NULL, "encrypted_password" character varying DEFAULT '' NOT NULL, "quarter_id" bigint, "club_id" bigint, "reset_password_token" character varying, "reset_password_sent_at" timestamp, "remember_created_at" timestamp, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (92.1ms)[0m  [1m[35mCREATE  INDEX  "index_users_on_quarter_id" ON "users"  ("quarter_id")[0m
+  [1m[35m (63.6ms)[0m  [1m[35mCREATE  INDEX  "index_users_on_club_id" ON "users"  ("club_id")[0m
+  [1m[35m (63.8ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_email" ON "users"  ("email")[0m
+  [1m[35m (63.6ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_reset_password_token" ON "users"  ("reset_password_token")[0m
+  [1m[36mprimary::SchemaMigration Create (0.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190912152807"]]
+  [1m[35m (19.3ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateQuarters (20190912152912)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (161.1ms)[0m  [1m[35mCREATE TABLE "quarters" ("id" bigserial primary key, "zip_code" character varying, "name" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190912152912"]]
+  [1m[35m (21.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateClubs (20190912153037)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (184.8ms)[0m  [1m[35mCREATE TABLE "clubs" ("id" bigserial primary key, "name" character varying, "category" character varying, "admin_id" bigint, "quarter_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (61.6ms)[0m  [1m[35mCREATE  INDEX  "index_clubs_on_admin_id" ON "clubs"  ("admin_id")[0m
+  [1m[35m (63.7ms)[0m  [1m[35mCREATE  INDEX  "index_clubs_on_quarter_id" ON "clubs"  ("quarter_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190912153037"]]
+  [1m[35m (20.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateRecrutements (20190912153121)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (172.7ms)[0m  [1m[35mCREATE TABLE "recrutements" ("id" bigserial primary key, "content" text, "deadline" timestamp, "club_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (63.5ms)[0m  [1m[35mCREATE  INDEX  "index_recrutements_on_club_id" ON "recrutements"  ("club_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190912153121"]]
+  [1m[35m (19.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateEvents (20190912153627)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (174.3ms)[0m  [1m[35mCREATE TABLE "events" ("id" bigserial primary key, "start_date" timestamp, "duration" integer, "title" character varying, "description" text, "price" integer, "location" character varying, "club_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (63.4ms)[0m  [1m[35mCREATE  INDEX  "index_events_on_club_id" ON "events"  ("club_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190912153627"]]
+  [1m[35m (18.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddNameToUser (20190912154308)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "first_name" character varying[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "users" ADD "last_name" character varying[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "age" integer[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "users" ADD "description" text[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "gender" character varying[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "users" ADD "pseudonym" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190912154308"]]
+  [1m[35m (17.3ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddRoleToUser (20190912154334)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "users" ADD "role" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190912154334"]]
+  [1m[35m (14.1ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateRequests (20190912155124)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (164.2ms)[0m  [1m[35mCREATE TABLE "requests" ("id" bigserial primary key, "application_letter" text, "parcours" text, "recrutement_id" bigint, "user_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (107.2ms)[0m  [1m[35mCREATE  INDEX  "index_requests_on_recrutement_id" ON "requests"  ("recrutement_id")[0m
+  [1m[35m (74.6ms)[0m  [1m[35mCREATE  INDEX  "index_requests_on_user_id" ON "requests"  ("user_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190912155124"]]
+  [1m[35m (15.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateStaticPages (20190912155322)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (76.5ms)[0m  [1m[35mCREATE TABLE "static_pages" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190912155322"]]
+  [1m[35m (25.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateActiveStorageTables (20190913011908)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (144.4ms)[0m  [1m[35mCREATE TABLE "active_storage_blobs" ("id" bigserial primary key, "key" character varying NOT NULL, "filename" character varying NOT NULL, "content_type" character varying, "metadata" text, "byte_size" bigint NOT NULL, "checksum" character varying NOT NULL, "created_at" timestamp NOT NULL)[0m
+  [1m[35m (73.9ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_active_storage_blobs_on_key" ON "active_storage_blobs"  ("key")[0m
+  [1m[35m (143.8ms)[0m  [1m[35mCREATE TABLE "active_storage_attachments" ("id" bigserial primary key, "name" character varying NOT NULL, "record_type" character varying NOT NULL, "record_id" bigint NOT NULL, "blob_id" bigint NOT NULL, "created_at" timestamp NOT NULL, CONSTRAINT "fk_rails_c3b3935057"
+FOREIGN KEY ("blob_id")
+  REFERENCES "active_storage_blobs" ("id")
+)[0m
+  [1m[35m (62.3ms)[0m  [1m[35mCREATE  INDEX  "index_active_storage_attachments_on_blob_id" ON "active_storage_attachments"  ("blob_id")[0m
+  [1m[35m (75.0ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_active_storage_attachments_uniqueness" ON "active_storage_attachments"  ("record_type", "record_id", "name", "blob_id")[0m
+  [1m[36mprimary::SchemaMigration Create (1.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190913011908"]]
+  [1m[35m (16.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.5ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActiveRecord::InternalMetadata Create (1.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2019-09-13 15:48:50.215075"], ["updated_at", "2019-09-13 15:48:50.215075"]]
+  [1m[35m (14.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(1454809796900757255)[0m
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mQuarter Load (0.6ms)[0m  [1m[34mSELECT "quarters".* FROM "quarters"[0m
+  [1m[36mUser Load (2.3ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  [1m[36mClub Load (0.7ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs"[0m
+  [1m[36mRecrutement Load (0.8ms)[0m  [1m[34mSELECT "recrutements".* FROM "recrutements"[0m
+  [1m[36mRequest Load (1.0ms)[0m  [1m[34mSELECT "requests".* FROM "requests"[0m
+  [1m[36mEvent Load (0.7ms)[0m  [1m[34mSELECT "events".* FROM "events"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mQuarter Create (0.6ms)[0m  [1m[32mINSERT INTO "quarters" ("zip_code", "name", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["zip_code", "86678"], ["name", "Steuber Groves"], ["created_at", "2019-09-13 15:48:50.583606"], ["updated_at", "2019-09-13 15:48:50.583606"]]
+  [1m[35m (23.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mQuarter Create (0.4ms)[0m  [1m[32mINSERT INTO "quarters" ("zip_code", "name", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["zip_code", "99684-8650"], ["name", "Larissa Dale"], ["created_at", "2019-09-13 15:48:50.612729"], ["updated_at", "2019-09-13 15:48:50.612729"]]
+  [1m[35m (15.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mQuarter Create (0.5ms)[0m  [1m[32mINSERT INTO "quarters" ("zip_code", "name", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["zip_code", "27169"], ["name", "Olin Place"], ["created_at", "2019-09-13 15:48:50.634803"], ["updated_at", "2019-09-13 15:48:50.634803"]]
+  [1m[35m (15.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mQuarter Create (0.5ms)[0m  [1m[32mINSERT INTO "quarters" ("zip_code", "name", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["zip_code", "11135"], ["name", "Wintheiser Corner"], ["created_at", "2019-09-13 15:48:50.656623"], ["updated_at", "2019-09-13 15:48:50.656623"]]
+  [1m[35m (16.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mQuarter Create (0.5ms)[0m  [1m[32mINSERT INTO "quarters" ("zip_code", "name", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["zip_code", "42092"], ["name", "Delbert Summit"], ["created_at", "2019-09-13 15:48:50.678996"], ["updated_at", "2019-09-13 15:48:50.678996"]]
+  [1m[35m (15.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mQuarter Create (0.5ms)[0m  [1m[32mINSERT INTO "quarters" ("zip_code", "name", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["zip_code", "42786-5156"], ["name", "Bergstrom Motorway"], ["created_at", "2019-09-13 15:48:50.701019"], ["updated_at", "2019-09-13 15:48:50.701019"]]
+  [1m[35m (15.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mQuarter Create (0.5ms)[0m  [1m[32mINSERT INTO "quarters" ("zip_code", "name", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["zip_code", "90514"], ["name", "Nader Row"], ["created_at", "2019-09-13 15:48:50.723154"], ["updated_at", "2019-09-13 15:48:50.723154"]]
+  [1m[35m (15.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mQuarter Create (0.5ms)[0m  [1m[32mINSERT INTO "quarters" ("zip_code", "name", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["zip_code", "60155-1013"], ["name", "Coleen Estate"], ["created_at", "2019-09-13 15:48:50.745492"], ["updated_at", "2019-09-13 15:48:50.745492"]]
+  [1m[35m (15.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mQuarter Create (0.5ms)[0m  [1m[32mINSERT INTO "quarters" ("zip_code", "name", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["zip_code", "79361"], ["name", "Birgit Fields"], ["created_at", "2019-09-13 15:48:50.767467"], ["updated_at", "2019-09-13 15:48:50.767467"]]
+  [1m[35m (15.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mQuarter Create (0.5ms)[0m  [1m[32mINSERT INTO "quarters" ("zip_code", "name", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["zip_code", "60731"], ["name", "Jerde Meadows"], ["created_at", "2019-09-13 15:48:50.789671"], ["updated_at", "2019-09-13 15:48:50.789671"]]
+  [1m[35m (15.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mQuarter Create (0.5ms)[0m  [1m[32mINSERT INTO "quarters" ("zip_code", "name", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["zip_code", "65789"], ["name", "Clyde Spur"], ["created_at", "2019-09-13 15:48:50.812005"], ["updated_at", "2019-09-13 15:48:50.812005"]]
+  [1m[35m (15.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mQuarter Create (0.5ms)[0m  [1m[32mINSERT INTO "quarters" ("zip_code", "name", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["zip_code", "70715"], ["name", "Lubowitz Manors"], ["created_at", "2019-09-13 15:48:50.833981"], ["updated_at", "2019-09-13 15:48:50.833981"]]
+  [1m[35m (15.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mQuarter Create (0.5ms)[0m  [1m[32mINSERT INTO "quarters" ("zip_code", "name", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["zip_code", "88981"], ["name", "Jackqueline Ford"], ["created_at", "2019-09-13 15:48:50.856499"], ["updated_at", "2019-09-13 15:48:50.856499"]]
+  [1m[35m (14.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mQuarter Create (0.5ms)[0m  [1m[32mINSERT INTO "quarters" ("zip_code", "name", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["zip_code", "19351"], ["name", "Sawayn Road"], ["created_at", "2019-09-13 15:48:50.878276"], ["updated_at", "2019-09-13 15:48:50.878276"]]
+  [1m[35m (15.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mQuarter Create (0.5ms)[0m  [1m[32mINSERT INTO "quarters" ("zip_code", "name", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["zip_code", "53069"], ["name", "Renaldo Route"], ["created_at", "2019-09-13 15:48:50.900616"], ["updated_at", "2019-09-13 15:48:50.900616"]]
+  [1m[35m (14.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mQuarter Create (0.5ms)[0m  [1m[32mINSERT INTO "quarters" ("zip_code", "name", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["zip_code", "07347"], ["name", "Josephine Corner"], ["created_at", "2019-09-13 15:48:50.922650"], ["updated_at", "2019-09-13 15:48:50.922650"]]
+  [1m[35m (15.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mQuarter Create (0.4ms)[0m  [1m[32mINSERT INTO "quarters" ("zip_code", "name", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["zip_code", "74249-3511"], ["name", "Toy Tunnel"], ["created_at", "2019-09-13 15:48:50.944769"], ["updated_at", "2019-09-13 15:48:50.944769"]]
+  [1m[35m (15.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mQuarter Create (0.5ms)[0m  [1m[32mINSERT INTO "quarters" ("zip_code", "name", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["zip_code", "85636-9038"], ["name", "Erdman Creek"], ["created_at", "2019-09-13 15:48:50.967091"], ["updated_at", "2019-09-13 15:48:50.967091"]]
+  [1m[35m (15.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mQuarter Create (0.5ms)[0m  [1m[32mINSERT INTO "quarters" ("zip_code", "name", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["zip_code", "50823"], ["name", "Hyatt Isle"], ["created_at", "2019-09-13 15:48:50.988984"], ["updated_at", "2019-09-13 15:48:50.988984"]]
+  [1m[35m (15.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mQuarter Create (0.6ms)[0m  [1m[32mINSERT INTO "quarters" ("zip_code", "name", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["zip_code", "58283"], ["name", "Smitham Meadows"], ["created_at", "2019-09-13 15:48:51.011131"], ["updated_at", "2019-09-13 15:48:51.011131"]]
+  [1m[35m (15.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "matt@kertzmann.biz"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.9ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "quarter_id", "club_id", "created_at", "updated_at", "first_name", "last_name", "age", "description", "gender", "pseudonym") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "matt@kertzmann.biz"], ["encrypted_password", "$2a$11$tBR3E.9NsT3Tt.rLuhorROWrekl52a/tkLad3T3NH.oC3HyYrWZCG"], ["quarter_id", 6], ["club_id", 18], ["created_at", "2019-09-13 15:48:51.227858"], ["updated_at", "2019-09-13 15:48:51.227858"], ["first_name", "Buddy"], ["last_name", "Stehr"], ["age", 14], ["description", "Yes, a Jedi’s strength flows from the Force. But beware of the dark side. Anger, fear, aggression; the dark side of the Force are they. Easily they flow, quick to join you in a fight. If once you start down the dark path, forever will it dominate your destiny, consume you it will, as it did Obi-Wan’s apprentice."], ["gender", "Male"], ["pseudonym", "Multiple"]]
+  [1m[35m (88.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "miles@kemmerschiller.io"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "quarter_id", "club_id", "created_at", "updated_at", "first_name", "last_name", "age", "description", "gender", "pseudonym") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "miles@kemmerschiller.io"], ["encrypted_password", "$2a$11$Ew3/fkvg0IlbpsNXU7TQ4.b.CQmXfgZjMjjLCVf9vaU73iNjH6Efy"], ["quarter_id", 5], ["club_id", 10], ["created_at", "2019-09-13 15:48:51.475717"], ["updated_at", "2019-09-13 15:48:51.475717"], ["first_name", "August"], ["last_name", "Crist"], ["age", 43], ["description", "Death is a natural part of life. Rejoice for those around you who transform into the Force. Mourn them do not. Miss them do not. Attachment leads to jealously. The shadow of greed, that is."], ["gender", "Female"], ["pseudonym", "Valkyrie"]]
+  [1m[35m (18.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "diamond@simonisbecker.biz"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "quarter_id", "club_id", "created_at", "updated_at", "first_name", "last_name", "age", "description", "gender", "pseudonym") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "diamond@simonisbecker.biz"], ["encrypted_password", "$2a$11$o0VIoc6QFPggMK9twpPVSumLsqzFswbHF8zZNXVwf/lJN1M7P0Lnu"], ["quarter_id", 6], ["club_id", 6], ["created_at", "2019-09-13 15:48:51.651075"], ["updated_at", "2019-09-13 15:48:51.651075"], ["first_name", "Gonzalo"], ["last_name", "Adams"], ["age", 15], ["description", "That is why you fail."], ["gender", "Male"], ["pseudonym", "Omega Red"]]
+  [1m[35m (20.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "adelia@wehner.biz"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "quarter_id", "club_id", "created_at", "updated_at", "first_name", "last_name", "age", "description", "gender", "pseudonym") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "adelia@wehner.biz"], ["encrypted_password", "$2a$11$hgOhzw7jj8t60X2wOyul/OsjRFkaXVlFpzfhmTZeK.GQGsPTKcHui"], ["quarter_id", 13], ["club_id", 10], ["created_at", "2019-09-13 15:48:51.828854"], ["updated_at", "2019-09-13 15:48:51.828854"], ["first_name", "Cleta"], ["last_name", "Hane"], ["age", 29], ["description", "Much to learn you still have my old padawan. ... This is just the beginning!"], ["gender", "Female"], ["pseudonym", "Ghost"]]
+  [1m[35m (19.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "elane@mccullough.biz"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "quarter_id", "club_id", "created_at", "updated_at", "first_name", "last_name", "age", "description", "gender", "pseudonym") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "elane@mccullough.biz"], ["encrypted_password", "$2a$11$O.0Lt.LRPz6z9HrUbXOiGuE5B6koYjKnCAKNPrpwkqgcTz8LkobWG"], ["quarter_id", 10], ["club_id", 12], ["created_at", "2019-09-13 15:48:52.005797"], ["updated_at", "2019-09-13 15:48:52.005797"], ["first_name", "Danita"], ["last_name", "Erdman"], ["age", 12], ["description", "Soon will I rest, yes, forever sleep. Earned it I have. Twilight is upon me, soon night must fall."], ["gender", "Male"], ["pseudonym", "Mimic"]]
+  [1m[35m (20.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "fredda_ondricka@carroll.com"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "quarter_id", "club_id", "created_at", "updated_at", "first_name", "last_name", "age", "description", "gender", "pseudonym") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "fredda_ondricka@carroll.com"], ["encrypted_password", "$2a$11$GM.W12SKC1/.0gGRycYzeuvQD23UMTB853WUHjtcOWH.ynv9wczpq"], ["quarter_id", 7], ["club_id", 7], ["created_at", "2019-09-13 15:48:52.182946"], ["updated_at", "2019-09-13 15:48:52.182946"], ["first_name", "Britteny"], ["last_name", "Dare"], ["age", 47], ["description", "Good relations with the Wookiees, I have."], ["gender", "Female"], ["pseudonym", "Overtkill"]]
+  [1m[35m (19.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "lavonna.zemlak@haneankunding.biz"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "quarter_id", "club_id", "created_at", "updated_at", "first_name", "last_name", "age", "description", "gender", "pseudonym") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "lavonna.zemlak@haneankunding.biz"], ["encrypted_password", "$2a$11$lHJiRJ9jDBFRRXkvzXUm2uS5nZblw91i9SP81DauBL5XEnKBvWgVW"], ["quarter_id", 5], ["club_id", 17], ["created_at", "2019-09-13 15:48:52.357307"], ["updated_at", "2019-09-13 15:48:52.357307"], ["first_name", "Miranda"], ["last_name", "Wunsch"], ["age", 28], ["description", "Truly wonderful, the mind of a child is."], ["gender", "Male"], ["pseudonym", "A-Bomb"]]
+  [1m[35m (22.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "dominick@kuphalosinski.com"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "quarter_id", "club_id", "created_at", "updated_at", "first_name", "last_name", "age", "description", "gender", "pseudonym") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "dominick@kuphalosinski.com"], ["encrypted_password", "$2a$11$3Z72S1JoSG/lJkvo7udx5eellrqPPv4YsTQ0upCz3GDqxqaQKFG0y"], ["quarter_id", 15], ["club_id", 12], ["created_at", "2019-09-13 15:48:52.535475"], ["updated_at", "2019-09-13 15:48:52.535475"], ["first_name", "Murray"], ["last_name", "Block"], ["age", 32], ["description", "Once you start down the dark path, forever will it dominate your destiny, consume you it will."], ["gender", "Male"], ["pseudonym", "Steel"]]
+  [1m[35m (21.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "mi@stroman.name"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "quarter_id", "club_id", "created_at", "updated_at", "first_name", "last_name", "age", "description", "gender", "pseudonym") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "mi@stroman.name"], ["encrypted_password", "$2a$11$mk0ub0nHwmcnRA4Pw6azBuUoCyqRi1cG3QoSTpMEyKlmcuWll3zl."], ["quarter_id", 7], ["club_id", 17], ["created_at", "2019-09-13 15:48:52.711760"], ["updated_at", "2019-09-13 15:48:52.711760"], ["first_name", "Yong"], ["last_name", "Hilll"], ["age", 31], ["description", "Death is a natural part of life. Rejoice for those around you who transform into the Force. Mourn them do not. Miss them do not. Attachment leads to jealously. The shadow of greed, that is."], ["gender", "Male"], ["pseudonym", "Warpath"]]
+  [1m[35m (22.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "brandon_mraz@kochhuel.co"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "quarter_id", "club_id", "created_at", "updated_at", "first_name", "last_name", "age", "description", "gender", "pseudonym") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "brandon_mraz@kochhuel.co"], ["encrypted_password", "$2a$11$WNYonQhDCS.Ag43UqOITTu7JpmSfV.eJeFTVUvItfvPv5vkpn8xS6"], ["quarter_id", 11], ["club_id", 15], ["created_at", "2019-09-13 15:48:52.890851"], ["updated_at", "2019-09-13 15:48:52.890851"], ["first_name", "Russ"], ["last_name", "Barrows"], ["age", 26], ["description", "To answer power with power, the Jedi way this is not. In this war, a danger there is, of losing who we are."], ["gender", "Female"], ["pseudonym", "Huntress"]]
+  [1m[35m (20.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "renae@mante.info"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "quarter_id", "club_id", "created_at", "updated_at", "first_name", "last_name", "age", "description", "gender", "pseudonym") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "renae@mante.info"], ["encrypted_password", "$2a$11$NlEeG494WnOumDfubdt1BupJ/RkvDIvrzxIw63V2LC6XZsB9OZQEu"], ["quarter_id", 6], ["club_id", 20], ["created_at", "2019-09-13 15:48:53.067053"], ["updated_at", "2019-09-13 15:48:53.067053"], ["first_name", "Blair"], ["last_name", "Koepp"], ["age", 17], ["description", "Soon will I rest, yes, forever sleep. Earned it I have. Twilight is upon me, soon night must fall."], ["gender", "Male"], ["pseudonym", "Warlock"]]
+  [1m[35m (21.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "miriam.cole@romaguera.name"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "quarter_id", "club_id", "created_at", "updated_at", "first_name", "last_name", "age", "description", "gender", "pseudonym") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "miriam.cole@romaguera.name"], ["encrypted_password", "$2a$11$8Uyz3aPX7Sfnrb/scI713uTRwUxKg4jZQneWFb6kc8XEs83SWfWMi"], ["quarter_id", 5], ["club_id", 2], ["created_at", "2019-09-13 15:48:53.242730"], ["updated_at", "2019-09-13 15:48:53.242730"], ["first_name", "Caprice"], ["last_name", "Stokes"], ["age", 28], ["description", "Your weapons, you will not need them."], ["gender", "Female"], ["pseudonym", "Synch"]]
+  [1m[35m (22.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "lamont_bradtke@pfannerstillhoeger.org"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "quarter_id", "club_id", "created_at", "updated_at", "first_name", "last_name", "age", "description", "gender", "pseudonym") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "lamont_bradtke@pfannerstillhoeger.org"], ["encrypted_password", "$2a$11$P9wYyUZi0.WbFCwYoes67OPX2ptHV5f4mP9pnj.Aq7N4zBqzUF03."], ["quarter_id", 9], ["club_id", 3], ["created_at", "2019-09-13 15:48:53.421445"], ["updated_at", "2019-09-13 15:48:53.421445"], ["first_name", "Jamal"], ["last_name", "Crooks"], ["age", 26], ["description", "That is why you fail."], ["gender", "Female"], ["pseudonym", "Kang"]]
+  [1m[35m (32.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "antoine.kaulke@gislasonwhite.info"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "quarter_id", "club_id", "created_at", "updated_at", "first_name", "last_name", "age", "description", "gender", "pseudonym") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "antoine.kaulke@gislasonwhite.info"], ["encrypted_password", "$2a$11$FOKG79sJdFYYJ.OpmrCWNeNBDdawfgoudrj7HVjDwVOntEx5XlCue"], ["quarter_id", 7], ["club_id", 5], ["created_at", "2019-09-13 15:48:53.608266"], ["updated_at", "2019-09-13 15:48:53.608266"], ["first_name", "George"], ["last_name", "Miller"], ["age", 20], ["description", "Ow, ow, OW! On my ear you are!"], ["gender", "Male"], ["pseudonym", "Maverick"]]
+  [1m[35m (33.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "brandee_parisian@rosenbaum.net"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "quarter_id", "club_id", "created_at", "updated_at", "first_name", "last_name", "age", "description", "gender", "pseudonym") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "brandee_parisian@rosenbaum.net"], ["encrypted_password", "$2a$11$rFsEzAhkOQhLoAVo9.Z6EugevcvewOJl85xZg5VRNNp8Q7xETecwS"], ["quarter_id", 11], ["club_id", 10], ["created_at", "2019-09-13 15:48:53.798599"], ["updated_at", "2019-09-13 15:48:53.798599"], ["first_name", "Alex"], ["last_name", "Feest"], ["age", 33], ["description", "Strong is Vader. Mind what you have learned. Save you it can."], ["gender", "Female"], ["pseudonym", "Copycat"]]
+  [1m[35m (31.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "ali@marks.org"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "quarter_id", "club_id", "created_at", "updated_at", "first_name", "last_name", "age", "description", "gender", "pseudonym") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "ali@marks.org"], ["encrypted_password", "$2a$11$eXPiQMzdBc.GwoRKBaFLQeC4y5dlrkkZuCJl4f8SlHwL6YGJf3za2"], ["quarter_id", 14], ["club_id", 1], ["created_at", "2019-09-13 15:48:53.986190"], ["updated_at", "2019-09-13 15:48:53.986190"], ["first_name", "Fred"], ["last_name", "Denesik"], ["age", 19], ["description", "Adventure. Excitement. A Jedi craves not these things."], ["gender", "Female"], ["pseudonym", "Mimic"]]
+  [1m[35m (21.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "caren@gutmannkaulke.com"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "quarter_id", "club_id", "created_at", "updated_at", "first_name", "last_name", "age", "description", "gender", "pseudonym") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "caren@gutmannkaulke.com"], ["encrypted_password", "$2a$11$YMLhhc2fCTFENLYn3vdix.vJkohTtfU1CeWyMvYKBUUaxAb.7IZEW"], ["quarter_id", 11], ["club_id", 3], ["created_at", "2019-09-13 15:48:54.163190"], ["updated_at", "2019-09-13 15:48:54.163190"], ["first_name", "Anamaria"], ["last_name", "Abbott"], ["age", 17], ["description", "That is why you fail."], ["gender", "Female"], ["pseudonym", "Lobo"]]
+  [1m[35m (21.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "rufus_bahringer@lueilwitz.biz"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "quarter_id", "club_id", "created_at", "updated_at", "first_name", "last_name", "age", "description", "gender", "pseudonym") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "rufus_bahringer@lueilwitz.biz"], ["encrypted_password", "$2a$11$v.MJupKNt/tqoYpqyJGi4O.q9fYSxLc1beBizL258mDCZPNxer.wS"], ["quarter_id", 8], ["club_id", 5], ["created_at", "2019-09-13 15:48:54.340019"], ["updated_at", "2019-09-13 15:48:54.340019"], ["first_name", "Charlie"], ["last_name", "Muller"], ["age", 13], ["description", "Through the Force, things you will see. Other places. The future - the past. Old friends long gone."], ["gender", "Female"], ["pseudonym", "Magneto"]]
+  [1m[35m (21.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "julius.hirthe@ryaneffertz.org"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "quarter_id", "club_id", "created_at", "updated_at", "first_name", "last_name", "age", "description", "gender", "pseudonym") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "julius.hirthe@ryaneffertz.org"], ["encrypted_password", "$2a$11$SLRTPcm5ZF5Lp3iCi2vHbeoDQvMKRRgMBiLX9nObqzrILzBWL/IVS"], ["quarter_id", 1], ["club_id", 13], ["created_at", "2019-09-13 15:48:54.516430"], ["updated_at", "2019-09-13 15:48:54.516430"], ["first_name", "Elayne"], ["last_name", "Runte"], ["age", 43], ["description", "Size matters not. Look at me. Judge me by my size, do you? Hmm? Hmm. And well you should not. For my ally is the Force, and a powerful ally it is. Life creates it, makes it grow. Its energy surrounds us and binds us. Luminous beings are we, not this crude matter. You must feel the Force around you; here, between you, me, the tree, the rock, everywhere, yes. Even between the land and the ship."], ["gender", "Female"], ["pseudonym", "Skaar"]]
+  [1m[35m (33.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "kitty@wisoky.net"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "quarter_id", "club_id", "created_at", "updated_at", "first_name", "last_name", "age", "description", "gender", "pseudonym") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "kitty@wisoky.net"], ["encrypted_password", "$2a$11$aqPMOrWfHv6Y0zF1wx66b.aPnPc/XXa0/QSAGcJcar6nS8jXHm0AO"], ["quarter_id", 3], ["club_id", 15], ["created_at", "2019-09-13 15:48:54.703789"], ["updated_at", "2019-09-13 15:48:54.703789"], ["first_name", "Wendy"], ["last_name", "Borer"], ["age", 28], ["description", "Around the survivors a perimeter create."], ["gender", "Male"], ["pseudonym", "Cottonmouth"]]
+  [1m[35m (34.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mQuarter Load (0.3ms)[0m  [1m[34mSELECT "quarters".* FROM "quarters" WHERE "quarters"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[36mClub Create (0.7ms)[0m  [1m[32mINSERT INTO "clubs" ("name", "category", "admin_id", "quarter_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Dishonored"], ["category", "North Humbertoton"], ["admin_id", 2], ["quarter_id", 4], ["created_at", "2019-09-13 15:48:54.761660"], ["updated_at", "2019-09-13 15:48:54.761660"]]
+  [1m[35m (20.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mQuarter Load (0.3ms)[0m  [1m[34mSELECT "quarters".* FROM "quarters" WHERE "quarters"."id" = $1 LIMIT $2[0m  [["id", 7], ["LIMIT", 1]]
+  [1m[36mClub Create (0.4ms)[0m  [1m[32mINSERT INTO "clubs" ("name", "category", "admin_id", "quarter_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "The Witcher 2: Assassins of Kings"], ["category", "Port Bobetteberg"], ["admin_id", 1], ["quarter_id", 7], ["created_at", "2019-09-13 15:48:54.793234"], ["updated_at", "2019-09-13 15:48:54.793234"]]
+  [1m[35m (21.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mQuarter Load (0.3ms)[0m  [1m[34mSELECT "quarters".* FROM "quarters" WHERE "quarters"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mClub Create (0.5ms)[0m  [1m[32mINSERT INTO "clubs" ("name", "category", "admin_id", "quarter_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Pokémon Red"], ["category", "Lake Desirae"], ["admin_id", 3], ["quarter_id", 1], ["created_at", "2019-09-13 15:48:54.827205"], ["updated_at", "2019-09-13 15:48:54.827205"]]
+  [1m[35m (20.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mQuarter Load (0.3ms)[0m  [1m[34mSELECT "quarters".* FROM "quarters" WHERE "quarters"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mClub Create (0.4ms)[0m  [1m[32mINSERT INTO "clubs" ("name", "category", "admin_id", "quarter_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Pokémon Black"], ["category", "Joanville"], ["admin_id", 1], ["quarter_id", 3], ["created_at", "2019-09-13 15:48:54.860557"], ["updated_at", "2019-09-13 15:48:54.860557"]]
+  [1m[35m (20.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[36mQuarter Load (0.3ms)[0m  [1m[34mSELECT "quarters".* FROM "quarters" WHERE "quarters"."id" = $1 LIMIT $2[0m  [["id", 20], ["LIMIT", 1]]
+  [1m[36mClub Create (0.4ms)[0m  [1m[32mINSERT INTO "clubs" ("name", "category", "admin_id", "quarter_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Civilization III"], ["category", "East Birgithaven"], ["admin_id", 4], ["quarter_id", 20], ["created_at", "2019-09-13 15:48:54.893824"], ["updated_at", "2019-09-13 15:48:54.893824"]]
+  [1m[35m (21.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mQuarter Load (0.3ms)[0m  [1m[34mSELECT "quarters".* FROM "quarters" WHERE "quarters"."id" = $1 LIMIT $2[0m  [["id", 7], ["LIMIT", 1]]
+  [1m[36mClub Create (0.6ms)[0m  [1m[32mINSERT INTO "clubs" ("name", "category", "admin_id", "quarter_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Halo 3: ODST"], ["category", "West Imelda"], ["admin_id", 1], ["quarter_id", 7], ["created_at", "2019-09-13 15:48:54.941461"], ["updated_at", "2019-09-13 15:48:54.941461"]]
+  [1m[35m (17.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mQuarter Load (0.2ms)[0m  [1m[34mSELECT "quarters".* FROM "quarters" WHERE "quarters"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mClub Create (0.4ms)[0m  [1m[32mINSERT INTO "clubs" ("name", "category", "admin_id", "quarter_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Perfect Dark"], ["category", "Kaylamouth"], ["admin_id", 18], ["quarter_id", 2], ["created_at", "2019-09-13 15:48:54.969472"], ["updated_at", "2019-09-13 15:48:54.969472"]]
+  [1m[35m (22.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 15], ["LIMIT", 1]]
+  [1m[36mQuarter Load (0.3ms)[0m  [1m[34mSELECT "quarters".* FROM "quarters" WHERE "quarters"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mClub Create (0.4ms)[0m  [1m[32mINSERT INTO "clubs" ("name", "category", "admin_id", "quarter_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "The Last of Us"], ["category", "Jeaneport"], ["admin_id", 15], ["quarter_id", 2], ["created_at", "2019-09-13 15:48:55.003134"], ["updated_at", "2019-09-13 15:48:55.003134"]]
+  [1m[35m (44.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mQuarter Load (0.3ms)[0m  [1m[34mSELECT "quarters".* FROM "quarters" WHERE "quarters"."id" = $1 LIMIT $2[0m  [["id", 7], ["LIMIT", 1]]
+  [1m[36mClub Create (0.4ms)[0m  [1m[32mINSERT INTO "clubs" ("name", "category", "admin_id", "quarter_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Perfect Dark"], ["category", "South Nelson"], ["admin_id", 18], ["quarter_id", 7], ["created_at", "2019-09-13 15:48:55.058787"], ["updated_at", "2019-09-13 15:48:55.058787"]]
+  [1m[35m (21.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 14], ["LIMIT", 1]]
+  [1m[36mQuarter Load (0.3ms)[0m  [1m[34mSELECT "quarters".* FROM "quarters" WHERE "quarters"."id" = $1 LIMIT $2[0m  [["id", 19], ["LIMIT", 1]]
+  [1m[36mClub Create (0.4ms)[0m  [1m[32mINSERT INTO "clubs" ("name", "category", "admin_id", "quarter_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Civilization V"], ["category", "Cornellton"], ["admin_id", 14], ["quarter_id", 19], ["created_at", "2019-09-13 15:48:55.092665"], ["updated_at", "2019-09-13 15:48:55.092665"]]
+  [1m[35m (20.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mQuarter Load (0.2ms)[0m  [1m[34mSELECT "quarters".* FROM "quarters" WHERE "quarters"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mClub Create (0.4ms)[0m  [1m[32mINSERT INTO "clubs" ("name", "category", "admin_id", "quarter_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Doom II"], ["category", "North Annettestad"], ["admin_id", 2], ["quarter_id", 3], ["created_at", "2019-09-13 15:48:55.125542"], ["updated_at", "2019-09-13 15:48:55.125542"]]
+  [1m[35m (77.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  [1m[36mQuarter Load (0.3ms)[0m  [1m[34mSELECT "quarters".* FROM "quarters" WHERE "quarters"."id" = $1 LIMIT $2[0m  [["id", 12], ["LIMIT", 1]]
+  [1m[36mClub Create (0.5ms)[0m  [1m[32mINSERT INTO "clubs" ("name", "category", "admin_id", "quarter_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Hearthstone"], ["category", "Ronnymouth"], ["admin_id", 6], ["quarter_id", 12], ["created_at", "2019-09-13 15:48:55.211888"], ["updated_at", "2019-09-13 15:48:55.211888"]]
+  [1m[35m (24.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 16], ["LIMIT", 1]]
+  [1m[36mQuarter Load (0.3ms)[0m  [1m[34mSELECT "quarters".* FROM "quarters" WHERE "quarters"."id" = $1 LIMIT $2[0m  [["id", 16], ["LIMIT", 1]]
+  [1m[36mClub Create (0.4ms)[0m  [1m[32mINSERT INTO "clubs" ("name", "category", "admin_id", "quarter_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Mario Kart: Double Dash"], ["category", "South Mikefurt"], ["admin_id", 16], ["quarter_id", 16], ["created_at", "2019-09-13 15:48:55.247650"], ["updated_at", "2019-09-13 15:48:55.247650"]]
+  [1m[35m (20.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mQuarter Load (0.3ms)[0m  [1m[34mSELECT "quarters".* FROM "quarters" WHERE "quarters"."id" = $1 LIMIT $2[0m  [["id", 10], ["LIMIT", 1]]
+  [1m[36mClub Create (0.5ms)[0m  [1m[32mINSERT INTO "clubs" ("name", "category", "admin_id", "quarter_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "BioShock Infinite"], ["category", "New Carletta"], ["admin_id", 2], ["quarter_id", 10], ["created_at", "2019-09-13 15:48:55.280828"], ["updated_at", "2019-09-13 15:48:55.280828"]]
+  [1m[35m (20.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 20], ["LIMIT", 1]]
+  [1m[36mQuarter Load (0.2ms)[0m  [1m[34mSELECT "quarters".* FROM "quarters" WHERE "quarters"."id" = $1 LIMIT $2[0m  [["id", 19], ["LIMIT", 1]]
+  [1m[36mClub Create (0.5ms)[0m  [1m[32mINSERT INTO "clubs" ("name", "category", "admin_id", "quarter_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Day of Defeat"], ["category", "Leschhaven"], ["admin_id", 20], ["quarter_id", 19], ["created_at", "2019-09-13 15:48:55.313352"], ["updated_at", "2019-09-13 15:48:55.313352"]]
+  [1m[35m (21.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mQuarter Load (0.3ms)[0m  [1m[34mSELECT "quarters".* FROM "quarters" WHERE "quarters"."id" = $1 LIMIT $2[0m  [["id", 17], ["LIMIT", 1]]
+  [1m[36mClub Create (0.5ms)[0m  [1m[32mINSERT INTO "clubs" ("name", "category", "admin_id", "quarter_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Diablo II"], ["category", "Schneiderhaven"], ["admin_id", 2], ["quarter_id", 17], ["created_at", "2019-09-13 15:48:55.346935"], ["updated_at", "2019-09-13 15:48:55.346935"]]
+  [1m[35m (41.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mQuarter Load (0.3ms)[0m  [1m[34mSELECT "quarters".* FROM "quarters" WHERE "quarters"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[36mClub Create (0.4ms)[0m  [1m[32mINSERT INTO "clubs" ("name", "category", "admin_id", "quarter_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Devil May Cry"], ["category", "Port Seymourstad"], ["admin_id", 2], ["quarter_id", 5], ["created_at", "2019-09-13 15:48:55.400369"], ["updated_at", "2019-09-13 15:48:55.400369"]]
+  [1m[35m (23.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 9], ["LIMIT", 1]]
+  [1m[36mQuarter Load (0.2ms)[0m  [1m[34mSELECT "quarters".* FROM "quarters" WHERE "quarters"."id" = $1 LIMIT $2[0m  [["id", 20], ["LIMIT", 1]]
+  [1m[36mClub Create (0.4ms)[0m  [1m[32mINSERT INTO "clubs" ("name", "category", "admin_id", "quarter_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Pokémon Platinum"], ["category", "South Vernell"], ["admin_id", 9], ["quarter_id", 20], ["created_at", "2019-09-13 15:48:55.432907"], ["updated_at", "2019-09-13 15:48:55.432907"]]
+  [1m[35m (24.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mQuarter Load (0.3ms)[0m  [1m[34mSELECT "quarters".* FROM "quarters" WHERE "quarters"."id" = $1 LIMIT $2[0m  [["id", 8], ["LIMIT", 1]]
+  [1m[36mClub Create (0.4ms)[0m  [1m[32mINSERT INTO "clubs" ("name", "category", "admin_id", "quarter_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Commandos 2: Men of Courage"], ["category", "East Melainemouth"], ["admin_id", 18], ["quarter_id", 8], ["created_at", "2019-09-13 15:48:55.467565"], ["updated_at", "2019-09-13 15:48:55.467565"]]
+  [1m[35m (22.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 12], ["LIMIT", 1]]
+  [1m[36mQuarter Load (0.3ms)[0m  [1m[34mSELECT "quarters".* FROM "quarters" WHERE "quarters"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mClub Create (0.3ms)[0m  [1m[32mINSERT INTO "clubs" ("name", "category", "admin_id", "quarter_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Pokémon Sword"], ["category", "West Chelsey"], ["admin_id", 12], ["quarter_id", 2], ["created_at", "2019-09-13 15:48:55.501269"], ["updated_at", "2019-09-13 15:48:55.501269"]]
+  [1m[35m (22.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[36mRecrutement Create (0.8ms)[0m  [1m[32mINSERT INTO "recrutements" ("content", "deadline", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["content", "Smaug"], ["deadline", "0021-09-19 00:00:00"], ["club_id", 5], ["created_at", "2019-09-13 15:48:55.541198"], ["updated_at", "2019-09-13 15:48:55.541198"]]
+  [1m[35m (15.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.4ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRecrutement Create (0.4ms)[0m  [1m[32mINSERT INTO "recrutements" ("content", "deadline", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["content", "Bifur"], ["deadline", "0021-09-19 00:00:00"], ["club_id", 3], ["created_at", "2019-09-13 15:48:55.564755"], ["updated_at", "2019-09-13 15:48:55.564755"]]
+  [1m[35m (14.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.4ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[36mRecrutement Create (0.4ms)[0m  [1m[32mINSERT INTO "recrutements" ("content", "deadline", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["content", "Bifur"], ["deadline", "0021-09-19 00:00:00"], ["club_id", 5], ["created_at", "2019-09-13 15:48:55.587422"], ["updated_at", "2019-09-13 15:48:55.587422"]]
+  [1m[35m (13.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRecrutement Create (0.4ms)[0m  [1m[32mINSERT INTO "recrutements" ("content", "deadline", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["content", "The Lord of the Eagles"], ["deadline", "0021-09-19 00:00:00"], ["club_id", 3], ["created_at", "2019-09-13 15:48:55.608944"], ["updated_at", "2019-09-13 15:48:55.608944"]]
+  [1m[35m (14.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.4ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[36mRecrutement Create (0.3ms)[0m  [1m[32mINSERT INTO "recrutements" ("content", "deadline", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["content", "Bombur"], ["deadline", "0021-09-19 00:00:00"], ["club_id", 5], ["created_at", "2019-09-13 15:48:55.631368"], ["updated_at", "2019-09-13 15:48:55.631368"]]
+  [1m[35m (13.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.4ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mRecrutement Create (0.5ms)[0m  [1m[32mINSERT INTO "recrutements" ("content", "deadline", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["content", "The Necromancer"], ["deadline", "0021-09-19 00:00:00"], ["club_id", 2], ["created_at", "2019-09-13 15:48:55.651816"], ["updated_at", "2019-09-13 15:48:55.651816"]]
+  [1m[35m (16.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[36mRecrutement Create (0.5ms)[0m  [1m[32mINSERT INTO "recrutements" ("content", "deadline", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["content", "Bifur"], ["deadline", "0021-09-19 00:00:00"], ["club_id", 4], ["created_at", "2019-09-13 15:48:55.675097"], ["updated_at", "2019-09-13 15:48:55.675097"]]
+  [1m[35m (14.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mRecrutement Create (0.4ms)[0m  [1m[32mINSERT INTO "recrutements" ("content", "deadline", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["content", "Oin"], ["deadline", "0021-09-19 00:00:00"], ["club_id", 1], ["created_at", "2019-09-13 15:48:55.697927"], ["updated_at", "2019-09-13 15:48:55.697927"]]
+  [1m[35m (24.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[36mRecrutement Create (0.5ms)[0m  [1m[32mINSERT INTO "recrutements" ("content", "deadline", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["content", "Bullroarer Took"], ["deadline", "0021-09-19 00:00:00"], ["club_id", 4], ["created_at", "2019-09-13 15:48:55.731406"], ["updated_at", "2019-09-13 15:48:55.731406"]]
+  [1m[35m (24.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRecrutement Create (0.5ms)[0m  [1m[32mINSERT INTO "recrutements" ("content", "deadline", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["content", "Oin"], ["deadline", "0021-09-19 00:00:00"], ["club_id", 3], ["created_at", "2019-09-13 15:48:55.764749"], ["updated_at", "2019-09-13 15:48:55.764749"]]
+  [1m[35m (24.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[36mRecrutement Create (0.4ms)[0m  [1m[32mINSERT INTO "recrutements" ("content", "deadline", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["content", "Gloin"], ["deadline", "0021-09-19 00:00:00"], ["club_id", 4], ["created_at", "2019-09-13 15:48:55.797832"], ["updated_at", "2019-09-13 15:48:55.797832"]]
+  [1m[35m (24.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.2ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mRecrutement Create (0.4ms)[0m  [1m[32mINSERT INTO "recrutements" ("content", "deadline", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["content", "Tom"], ["deadline", "0021-09-19 00:00:00"], ["club_id", 2], ["created_at", "2019-09-13 15:48:55.829632"], ["updated_at", "2019-09-13 15:48:55.829632"]]
+  [1m[35m (15.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mRecrutement Create (0.4ms)[0m  [1m[32mINSERT INTO "recrutements" ("content", "deadline", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["content", "Gandalf The Grey"], ["deadline", "0021-09-19 00:00:00"], ["club_id", 1], ["created_at", "2019-09-13 15:48:55.852528"], ["updated_at", "2019-09-13 15:48:55.852528"]]
+  [1m[35m (14.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRecrutement Create (0.4ms)[0m  [1m[32mINSERT INTO "recrutements" ("content", "deadline", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["content", "Dori"], ["deadline", "0021-09-19 00:00:00"], ["club_id", 3], ["created_at", "2019-09-13 15:48:55.874947"], ["updated_at", "2019-09-13 15:48:55.874947"]]
+  [1m[35m (13.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mRecrutement Create (0.4ms)[0m  [1m[32mINSERT INTO "recrutements" ("content", "deadline", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["content", "Gollum"], ["deadline", "0021-09-19 00:00:00"], ["club_id", 1], ["created_at", "2019-09-13 15:48:55.897492"], ["updated_at", "2019-09-13 15:48:55.897492"]]
+  [1m[35m (24.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRecrutement Create (0.4ms)[0m  [1m[32mINSERT INTO "recrutements" ("content", "deadline", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["content", "Fili"], ["deadline", "0021-09-19 00:00:00"], ["club_id", 3], ["created_at", "2019-09-13 15:48:55.930690"], ["updated_at", "2019-09-13 15:48:55.930690"]]
+  [1m[35m (24.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[36mRecrutement Create (0.4ms)[0m  [1m[32mINSERT INTO "recrutements" ("content", "deadline", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["content", "The Necromancer"], ["deadline", "0021-09-19 00:00:00"], ["club_id", 5], ["created_at", "2019-09-13 15:48:55.963922"], ["updated_at", "2019-09-13 15:48:55.963922"]]
+  [1m[35m (24.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mRecrutement Create (0.4ms)[0m  [1m[32mINSERT INTO "recrutements" ("content", "deadline", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["content", "Roac"], ["deadline", "0021-09-19 00:00:00"], ["club_id", 1], ["created_at", "2019-09-13 15:48:55.997164"], ["updated_at", "2019-09-13 15:48:55.997164"]]
+  [1m[35m (24.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[36mRecrutement Create (0.4ms)[0m  [1m[32mINSERT INTO "recrutements" ("content", "deadline", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["content", "The Great Goblin"], ["deadline", "0021-09-19 00:00:00"], ["club_id", 4], ["created_at", "2019-09-13 15:48:56.030404"], ["updated_at", "2019-09-13 15:48:56.030404"]]
+  [1m[35m (24.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[36mRecrutement Create (0.4ms)[0m  [1m[32mINSERT INTO "recrutements" ("content", "deadline", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["content", "Gloin"], ["deadline", "0021-09-19 00:00:00"], ["club_id", 4], ["created_at", "2019-09-13 15:48:56.063569"], ["updated_at", "2019-09-13 15:48:56.063569"]]
+  [1m[35m (24.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mRecrutement Load (0.2ms)[0m  [1m[34mSELECT "recrutements".* FROM "recrutements" WHERE "recrutements"."id" = $1 LIMIT $2[0m  [["id", 19], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRequest Create (0.7ms)[0m  [1m[32mINSERT INTO "requests" ("application_letter", "parcours", "recrutement_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["application_letter", "May the Force be with you."], ["parcours", "Roac"], ["recrutement_id", 19], ["user_id", 3], ["created_at", "2019-09-13 15:48:56.110617"], ["updated_at", "2019-09-13 15:48:56.110617"]]
+  [1m[35m (22.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mRecrutement Load (0.3ms)[0m  [1m[34mSELECT "recrutements".* FROM "recrutements" WHERE "recrutements"."id" = $1 LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mRequest Create (0.4ms)[0m  [1m[32mINSERT INTO "requests" ("application_letter", "parcours", "recrutement_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["application_letter", "You talking to me?"], ["parcours", "Dain"], ["recrutement_id", 18], ["user_id", 2], ["created_at", "2019-09-13 15:48:56.142942"], ["updated_at", "2019-09-13 15:48:56.142942"]]
+  [1m[35m (22.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mRecrutement Load (0.4ms)[0m  [1m[34mSELECT "recrutements".* FROM "recrutements" WHERE "recrutements"."id" = $1 LIMIT $2[0m  [["id", 9], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 9], ["LIMIT", 1]]
+  [1m[36mRequest Create (0.4ms)[0m  [1m[32mINSERT INTO "requests" ("application_letter", "parcours", "recrutement_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["application_letter", "Frankly, my dear, I don’t give a damn."], ["parcours", "Golfimbul"], ["recrutement_id", 9], ["user_id", 9], ["created_at", "2019-09-13 15:48:56.177016"], ["updated_at", "2019-09-13 15:48:56.177016"]]
+  [1m[35m (21.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mRecrutement Load (0.3ms)[0m  [1m[34mSELECT "recrutements".* FROM "recrutements" WHERE "recrutements"."id" = $1 LIMIT $2[0m  [["id", 11], ["LIMIT", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 9], ["LIMIT", 1]]
+  [1m[36mRequest Create (0.4ms)[0m  [1m[32mINSERT INTO "requests" ("application_letter", "parcours", "recrutement_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["application_letter", "You talking to me?"], ["parcours", "Dori"], ["recrutement_id", 11], ["user_id", 9], ["created_at", "2019-09-13 15:48:56.207655"], ["updated_at", "2019-09-13 15:48:56.207655"]]
+  [1m[35m (13.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mRecrutement Load (0.3ms)[0m  [1m[34mSELECT "recrutements".* FROM "recrutements" WHERE "recrutements"."id" = $1 LIMIT $2[0m  [["id", 20], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 10], ["LIMIT", 1]]
+  [1m[36mRequest Create (0.4ms)[0m  [1m[32mINSERT INTO "requests" ("application_letter", "parcours", "recrutement_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["application_letter", "Here's looking at you, kid."], ["parcours", "Thorin Oakenshield"], ["recrutement_id", 20], ["user_id", 10], ["created_at", "2019-09-13 15:48:56.231520"], ["updated_at", "2019-09-13 15:48:56.231520"]]
+  [1m[35m (22.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mRecrutement Load (0.4ms)[0m  [1m[34mSELECT "recrutements".* FROM "recrutements" WHERE "recrutements"."id" = $1 LIMIT $2[0m  [["id", 17], ["LIMIT", 1]]
+  [1m[36mUser Load (2.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[36mRequest Create (0.5ms)[0m  [1m[32mINSERT INTO "requests" ("application_letter", "parcours", "recrutement_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["application_letter", "You talking to me?"], ["parcours", "Bofur"], ["recrutement_id", 17], ["user_id", 5], ["created_at", "2019-09-13 15:48:56.283238"], ["updated_at", "2019-09-13 15:48:56.283238"]]
+  [1m[35m (15.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mRecrutement Load (0.3ms)[0m  [1m[34mSELECT "recrutements".* FROM "recrutements" WHERE "recrutements"."id" = $1 LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[36mRequest Create (0.4ms)[0m  [1m[32mINSERT INTO "requests" ("application_letter", "parcours", "recrutement_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["application_letter", "Frankly, my dear, I don’t give a damn."], ["parcours", "Radagast"], ["recrutement_id", 18], ["user_id", 5], ["created_at", "2019-09-13 15:48:56.308571"], ["updated_at", "2019-09-13 15:48:56.308571"]]
+  [1m[35m (23.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mRecrutement Load (0.3ms)[0m  [1m[34mSELECT "recrutements".* FROM "recrutements" WHERE "recrutements"."id" = $1 LIMIT $2[0m  [["id", 17], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  [1m[36mRequest Create (0.4ms)[0m  [1m[32mINSERT INTO "requests" ("application_letter", "parcours", "recrutement_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["application_letter", "Frankly, my dear, I don’t give a damn."], ["parcours", "Beorn"], ["recrutement_id", 17], ["user_id", 6], ["created_at", "2019-09-13 15:48:56.342348"], ["updated_at", "2019-09-13 15:48:56.342348"]]
+  [1m[35m (22.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mRecrutement Load (0.3ms)[0m  [1m[34mSELECT "recrutements".* FROM "recrutements" WHERE "recrutements"."id" = $1 LIMIT $2[0m  [["id", 19], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 9], ["LIMIT", 1]]
+  [1m[36mRequest Create (0.4ms)[0m  [1m[32mINSERT INTO "requests" ("application_letter", "parcours", "recrutement_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["application_letter", "All right, Mr. DeMille, I'm ready for my closeup."], ["parcours", "Bullroarer Took"], ["recrutement_id", 19], ["user_id", 9], ["created_at", "2019-09-13 15:48:56.374931"], ["updated_at", "2019-09-13 15:48:56.374931"]]
+  [1m[35m (23.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mRecrutement Load (0.3ms)[0m  [1m[34mSELECT "recrutements".* FROM "recrutements" WHERE "recrutements"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mRequest Create (0.4ms)[0m  [1m[32mINSERT INTO "requests" ("application_letter", "parcours", "recrutement_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["application_letter", "I'm going to make him an offer he can't refuse."], ["parcours", "Kili"], ["recrutement_id", 3], ["user_id", 1], ["created_at", "2019-09-13 15:48:56.407833"], ["updated_at", "2019-09-13 15:48:56.407833"]]
+  [1m[35m (23.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.2ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 11], ["LIMIT", 1]]
+  [1m[36mEvent Create (0.9ms)[0m  [1m[32mINSERT INTO "events" ("start_date", "duration", "title", "description", "price", "location", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["start_date", "0021-09-19 00:00:00"], ["duration", 25], ["title", "Fasten your seatbelts. It's going to be a bumpy night."], ["description", "The Great Goblin"], ["price", 32], ["location", "Shadow of the Colossus"], ["club_id", 11], ["created_at", "2019-09-13 15:48:56.452409"], ["updated_at", "2019-09-13 15:48:56.452409"]]
+  [1m[35m (23.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mEvent Create (0.4ms)[0m  [1m[32mINSERT INTO "events" ("start_date", "duration", "title", "description", "price", "location", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["start_date", "0021-09-19 00:00:00"], ["duration", 45], ["title", "Fasten your seatbelts. It's going to be a bumpy night."], ["description", "Bolg"], ["price", 17], ["location", "Shadow of the Colossus"], ["club_id", 3], ["created_at", "2019-09-13 15:48:56.484475"], ["updated_at", "2019-09-13 15:48:56.484475"]]
+  [1m[35m (24.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 13], ["LIMIT", 1]]
+  [1m[36mEvent Create (0.4ms)[0m  [1m[32mINSERT INTO "events" ("start_date", "duration", "title", "description", "price", "location", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["start_date", "0021-09-19 00:00:00"], ["duration", 45], ["title", "Frankly, my dear, I don’t give a damn."], ["description", "Fili"], ["price", 31], ["location", "Thief II"], ["club_id", 13], ["created_at", "2019-09-13 15:48:56.517327"], ["updated_at", "2019-09-13 15:48:56.517327"]]
+  [1m[35m (24.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mEvent Create (0.4ms)[0m  [1m[32mINSERT INTO "events" ("start_date", "duration", "title", "description", "price", "location", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["start_date", "0021-09-19 00:00:00"], ["duration", 45], ["title", "May the Force be with you."], ["description", "Fili"], ["price", 38], ["location", "Diablo III"], ["club_id", 1], ["created_at", "2019-09-13 15:48:56.550766"], ["updated_at", "2019-09-13 15:48:56.550766"]]
+  [1m[35m (24.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 9], ["LIMIT", 1]]
+  [1m[36mEvent Create (0.4ms)[0m  [1m[32mINSERT INTO "events" ("start_date", "duration", "title", "description", "price", "location", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["start_date", "0021-09-19 00:00:00"], ["duration", 10], ["title", "What we've got here is failure to communicate."], ["description", "Galion"], ["price", 27], ["location", "Day of the Tentacle"], ["club_id", 9], ["created_at", "2019-09-13 15:48:56.583471"], ["updated_at", "2019-09-13 15:48:56.583471"]]
+  [1m[35m (13.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mEvent Create (0.4ms)[0m  [1m[32mINSERT INTO "events" ("start_date", "duration", "title", "description", "price", "location", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["start_date", "0021-09-19 00:00:00"], ["duration", 50], ["title", "Toto, I've got a feeling we're not in Kansas anymore."], ["description", "Bard the Bowman"], ["price", 18], ["location", "Fire Emblem Awakening"], ["club_id", 2], ["created_at", "2019-09-13 15:48:56.605676"], ["updated_at", "2019-09-13 15:48:56.605676"]]
+  [1m[35m (24.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.2ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 16], ["LIMIT", 1]]
+  [1m[36mEvent Create (0.4ms)[0m  [1m[32mINSERT INTO "events" ("start_date", "duration", "title", "description", "price", "location", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["start_date", "0021-09-19 00:00:00"], ["duration", 15], ["title", "Go ahead, make my day."], ["description", "Nori"], ["price", 33], ["location", "Team Fortress Classic"], ["club_id", 16], ["created_at", "2019-09-13 15:48:56.638172"], ["updated_at", "2019-09-13 15:48:56.638172"]]
+  [1m[35m (14.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 15], ["LIMIT", 1]]
+  [1m[36mEvent Create (0.4ms)[0m  [1m[32mINSERT INTO "events" ("start_date", "duration", "title", "description", "price", "location", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["start_date", "0021-09-19 00:00:00"], ["duration", 10], ["title", "I love the smell of napalm in the morning."], ["description", "Dain"], ["price", 21], ["location", "Portal"], ["club_id", 15], ["created_at", "2019-09-13 15:48:56.660880"], ["updated_at", "2019-09-13 15:48:56.660880"]]
+  [1m[35m (13.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[36mEvent Create (0.4ms)[0m  [1m[32mINSERT INTO "events" ("start_date", "duration", "title", "description", "price", "location", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["start_date", "0021-09-19 00:00:00"], ["duration", 40], ["title", "Toto, I've got a feeling we're not in Kansas anymore."], ["description", "Elrond"], ["price", 12], ["location", "Mario Kart: Double Dash"], ["club_id", 5], ["created_at", "2019-09-13 15:48:56.683151"], ["updated_at", "2019-09-13 15:48:56.683151"]]
+  [1m[35m (24.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mEvent Create (0.4ms)[0m  [1m[32mINSERT INTO "events" ("start_date", "duration", "title", "description", "price", "location", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["start_date", "0021-09-19 00:00:00"], ["duration", 35], ["title", "I love the smell of napalm in the morning."], ["description", "Gloin"], ["price", 25], ["location", "Counter-Strike: Source"], ["club_id", 2], ["created_at", "2019-09-13 15:48:56.716873"], ["updated_at", "2019-09-13 15:48:56.716873"]]
+  [1m[35m (24.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.2ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mEvent Create (0.4ms)[0m  [1m[32mINSERT INTO "events" ("start_date", "duration", "title", "description", "price", "location", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["start_date", "0021-09-19 00:00:00"], ["duration", 25], ["title", "What we've got here is failure to communicate."], ["description", "Galion"], ["price", 40], ["location", "Mass Effect"], ["club_id", 2], ["created_at", "2019-09-13 15:48:56.750063"], ["updated_at", "2019-09-13 15:48:56.750063"]]
+  [1m[35m (24.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mEvent Create (0.4ms)[0m  [1m[32mINSERT INTO "events" ("start_date", "duration", "title", "description", "price", "location", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["start_date", "0021-09-19 00:00:00"], ["duration", 25], ["title", "What we've got here is failure to communicate."], ["description", "Bilbo Baggins"], ["price", 46], ["location", "The Last of Us"], ["club_id", 2], ["created_at", "2019-09-13 15:48:56.783328"], ["updated_at", "2019-09-13 15:48:56.783328"]]
+  [1m[35m (24.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 17], ["LIMIT", 1]]
+  [1m[36mEvent Create (0.5ms)[0m  [1m[32mINSERT INTO "events" ("start_date", "duration", "title", "description", "price", "location", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["start_date", "0021-09-19 00:00:00"], ["duration", 50], ["title", "May the Force be with you."], ["description", "Bolg"], ["price", 43], ["location", "Pokémon Pearl"], ["club_id", 17], ["created_at", "2019-09-13 15:48:56.814155"], ["updated_at", "2019-09-13 15:48:56.814155"]]
+  [1m[35m (16.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  [1m[36mEvent Create (0.5ms)[0m  [1m[32mINSERT INTO "events" ("start_date", "duration", "title", "description", "price", "location", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["start_date", "0021-09-19 00:00:00"], ["duration", 30], ["title", "You talking to me?"], ["description", "The Lord of the Eagles"], ["price", 37], ["location", "Pokémon Yellow"], ["club_id", 6], ["created_at", "2019-09-13 15:48:56.838680"], ["updated_at", "2019-09-13 15:48:56.838680"]]
+  [1m[35m (24.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 11], ["LIMIT", 1]]
+  [1m[36mEvent Create (0.5ms)[0m  [1m[32mINSERT INTO "events" ("start_date", "duration", "title", "description", "price", "location", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["start_date", "0021-09-19 00:00:00"], ["duration", 40], ["title", "I'm going to make him an offer he can't refuse."], ["description", "Kili"], ["price", 32], ["location", "Metroid Prime 3: Corruption"], ["club_id", 11], ["created_at", "2019-09-13 15:48:56.871399"], ["updated_at", "2019-09-13 15:48:56.871399"]]
+  [1m[35m (24.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 15], ["LIMIT", 1]]
+  [1m[36mEvent Create (0.5ms)[0m  [1m[32mINSERT INTO "events" ("start_date", "duration", "title", "description", "price", "location", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["start_date", "0021-09-19 00:00:00"], ["duration", 35], ["title", "I'm going to make him an offer he can't refuse."], ["description", "Radagast"], ["price", 39], ["location", "Yoshi's Wooly World"], ["club_id", 15], ["created_at", "2019-09-13 15:48:56.905167"], ["updated_at", "2019-09-13 15:48:56.905167"]]
+  [1m[35m (23.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 9], ["LIMIT", 1]]
+  [1m[36mEvent Create (0.5ms)[0m  [1m[32mINSERT INTO "events" ("start_date", "duration", "title", "description", "price", "location", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["start_date", "0021-09-19 00:00:00"], ["duration", 25], ["title", "I'm going to make him an offer he can't refuse."], ["description", "Nori"], ["price", 10], ["location", "Mega Man"], ["club_id", 9], ["created_at", "2019-09-13 15:48:56.938230"], ["updated_at", "2019-09-13 15:48:56.938230"]]
+  [1m[35m (24.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mEvent Create (0.5ms)[0m  [1m[32mINSERT INTO "events" ("start_date", "duration", "title", "description", "price", "location", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["start_date", "0021-09-19 00:00:00"], ["duration", 50], ["title", "Here's looking at you, kid."], ["description", "Bungo Baggins"], ["price", 43], ["location", "The Witcher 3: Wild Hunt"], ["club_id", 1], ["created_at", "2019-09-13 15:48:56.971555"], ["updated_at", "2019-09-13 15:48:56.971555"]]
+  [1m[35m (23.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mEvent Create (0.5ms)[0m  [1m[32mINSERT INTO "events" ("start_date", "duration", "title", "description", "price", "location", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["start_date", "0021-09-19 00:00:00"], ["duration", 10], ["title", "I love the smell of napalm in the morning."], ["description", "Bilbo Baggins"], ["price", 10], ["location", "Castle Crashers"], ["club_id", 3], ["created_at", "2019-09-13 15:48:57.004788"], ["updated_at", "2019-09-13 15:48:57.004788"]]
+  [1m[35m (23.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mClub Load (0.3ms)[0m  [1m[34mSELECT "clubs".* FROM "clubs" WHERE "clubs"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[36mEvent Create (0.5ms)[0m  [1m[32mINSERT INTO "events" ("start_date", "duration", "title", "description", "price", "location", "club_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["start_date", "0021-09-19 00:00:00"], ["duration", 45], ["title", "All right, Mr. DeMille, I'm ready for my closeup."], ["description", "Bofur"], ["price", 15], ["location", "Pokémon Alpha Sapphire"], ["club_id", 4], ["created_at", "2019-09-13 15:48:57.038000"], ["updated_at", "2019-09-13 15:48:57.038000"]]
+  [1m[35m (24.2ms)[0m  [1m[35mCOMMIT[0m
